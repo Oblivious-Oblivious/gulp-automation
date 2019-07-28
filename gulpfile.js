@@ -1,11 +1,30 @@
+/* Dependencies */
 const gulp = require("gulp");
+const uglify = require("gulp-uglify");
 const ts = require("gulp-typescript");
-const tsProject = ts.createProject("tsconfig.json");
+const rename = require("gulp-rename");
 
-const typescript = () => {
-    return tsProject.src()
-    .pipe(tsProject())
-    .js.pipe(gulp.dest("assets/export"));
+/* Directories */
+const clientsource = "assets/client/";
+const exportsource = "assets/export/";
+const serversource = "assets/server/";
+
+/* Tasks */
+const copyViews = () => {
+    return gulp.src(clientsource + "*.html")
+    .pipe(gulp.dest(exportsource));
 }
 
-gulp.task("default", typescript);
+const typescript = () => {
+    const tsProject = ts.createProject("tsconfig.json");
+    return tsProject.src()
+    .pipe(tsProject())
+    .js.pipe(uglify())
+    .pipe(rename({
+        extname: ".min.js"
+    }))
+    .pipe(gulp.dest(exportsource));
+}
+
+const refactor = gulp.parallel(typescript, copyViews);
+gulp.task("default", refactor);

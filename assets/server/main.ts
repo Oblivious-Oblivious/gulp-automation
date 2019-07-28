@@ -3,7 +3,7 @@ import path = require("path");
 
 const clientsource: string = path.join(__dirname, "/../client/");
 const exportsource: string = path.join(__dirname, "/../export/");
-const serversource: string = path.join(__dirname, "/./");
+const serversource: string = path.join(__dirname, "/../server/");
 
 class Server {
     app: express.Application;
@@ -15,6 +15,9 @@ class Server {
     }
 
     run(): void {
+        /* Use the clientsource directory to include css */
+        this.app.use(express.static(exportsource + "public"));
+
         this.app.get("/", (req, res) => {
             res.sendFile(exportsource + "index.html");
         });

@@ -1,9 +1,7 @@
 import express = require("express");
 import path = require("path");
 
-const clientsource: string = path.join(__dirname, "/../client/");
 const exportsource: string = path.join(__dirname, "/../export/");
-const serversource: string = path.join(__dirname, "/../server/");
 
 class Server {
     app: express.Application;
